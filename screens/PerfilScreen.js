@@ -8,9 +8,9 @@ import Tab2 from '../tabs/MinhasLivesTab';
 class PerfilScreen extends PureComponent {
 
   static navigationOptions = {
-    headerTitle: <View style={{flexDirection: 'row'}}>
-    <Text style={{color: '#fff', fontSize: 30, fontFamily: 'Roboto-Bold'}}>MEU</Text>
-    <Text style={{color: '#6202F5', fontSize: 30, fontFamily: 'Roboto-Bold', marginLeft: 5}}>PERFIL</Text>
+    headerTitle: <View style={{flexDirection: 'row', alignItems: "center", justifyContent: 'center'}}>
+    <Text style={{color: '#fff', fontSize: 24, fontFamily: 'Roboto-Bold'}}>MEU</Text>
+    <Text style={{color: '#6202F5', fontSize: 24, fontFamily: 'Roboto-Bold', marginLeft: 5}}>PERFIL</Text>
     </View>
   }
   
@@ -25,12 +25,12 @@ class PerfilScreen extends PureComponent {
     return (
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-        <ImageBackground source={require('../img/cover-profile.jpg')} style={{ width: '100%', height: 350, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+        <ImageBackground source={require('../img/cover-profile.jpg')} style={{ width: '100%', height: 250, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
           <View style={styles.btnAlterar}>
             <Text style={styles.textBtn}>Alterar</Text>
           </View>
         </ImageBackground>
-        <ImageBackground source={require('../img/avatar-profile.jpg')} style={{ width: 110, height: 110, position: 'absolute', top: 300, left: 20 }} imageStyle={{ borderRadius: 100, borderWidth: 5, borderColor: '#6202F5' }}></ImageBackground>
+        <ImageBackground source={require('../img/avatar-profile.jpg')} style={{ width: 110, height: 110, position: 'absolute', top: 180, left: 20 }} imageStyle={{ borderRadius: 100, borderWidth: 5, borderColor: '#6202F5' }}></ImageBackground>
         <View style={styles.socialData}>
           <View style={styles.cardSocial}>
             <Text style={styles.titleSocial}>345</Text>
@@ -74,10 +74,10 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   btnAlterar: {
-    width: 90,
+    width: 80,
     backgroundColor: '#6202F5',
     borderRadius: 20,
-    padding: 10,
+    padding: 7,
     margin: 20,
     alignItems: 'center',
   },
@@ -89,42 +89,44 @@ const styles = StyleSheet.create({
     alignContent: 'space-between',
     alignItems: 'center',
     justifyContent: 'space-around',
-    marginTop: 80 ,
+    marginTop: 50 ,
     width: '60%',
   },
   cardSocial: {
-    width: 110,
-    height: 110,
+    width: 85,
+    height: 85,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#6202F5',
-    padding: 10,
+    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
   },
   titleSocial: {
     color: '#fff',
-    fontSize: 24
+    fontSize: 18
   },
   subTitleSocial: {
     color: '#fff',
-    fontSize: 14
+    fontSize: 12
   },
   profileData: {
     flexDirection: 'row',
+    marginBottom: 20
   },
   profile:{
-    padding: 10,
+    marginTop: 10
   },
   label: {
     color: '#B6B6B6',
-    fontSize: 16,
-    padding: 10
+    fontSize: 12,
+    marginBottom: 10
   },
   value:{
     color: '#fff',
-    fontSize: 16,
-    padding: 10
+    fontSize: 12,
+    marginBottom: 10,
+    marginLeft: 10
   }
 })
 

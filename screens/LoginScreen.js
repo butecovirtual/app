@@ -78,21 +78,23 @@ const styles = StyleSheet.create({
   },
   title:{
     color: '#fff',
-    fontSize: 28
+    fontSize: 24
   },
   input:{
     width: WIDTH - 100,
-    padding: 20,
+    maxHeight: 50,
+    padding: 15,
     borderWidth: 1,
     borderColor: '#985FEE',
     borderRadius: 6,
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 14,
   },
   button:{
-    padding: 20,
-    width: WIDTH - 50,
+    padding: 15,
+    width: WIDTH - 70,
     borderRadius: 6,
+    fontSize: 16,
   },
   gradient:{
     padding: 15,
@@ -101,7 +103,7 @@ const styles = StyleSheet.create({
   },
   text:{
     color: '#fff',
-    fontSize: 18
+    fontSize: 14
   },
   socialLogin:{
     alignItems: 'center',
@@ -109,8 +111,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   buttonSocial:{
-    padding: 15,
-    width: 150,
+    padding: 10,
+    width: 120,
     borderRadius: 6,
     alignItems: 'center',
     margin: 5
@@ -122,7 +124,7 @@ const styles = StyleSheet.create({
   },
   textCadastro: {
     color: '#fff',
-    fontSize: 18
+    fontSize: 14
   }
 });
 

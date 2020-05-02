@@ -160,22 +160,21 @@ const styles = StyleSheet.create({
     text: {
         color: '#fff',
         padding: 20,
-        paddingLeft: 70,
-        paddingRight: 70,
         textAlign: 'center'
     },
     form: {
         alignItems: 'center'
     },
-    input: {
+    input:{
         width: WIDTH - 100,
-        borderRadius: 10,
+        maxHeight: 50,
+        padding: 15,
         borderWidth: 1,
-        borderColor: '#6202F5',
-        padding: 20,
-        fontSize: 16,
+        borderColor: '#985FEE',
+        borderRadius: 6,
         marginTop: 10,
-    },
+        fontSize: 14,
+      },
     inputContainer: {
         marginTop: 10
     },
@@ -184,12 +183,12 @@ const styles = StyleSheet.create({
         top: 26,
         left: 15
     },
-    button: {
-        padding: 20,
-        width: WIDTH - 50,
+    button:{
+        padding: 15,
+        width: WIDTH - 70,
         borderRadius: 6,
-        marginBottom: 200
-    },
+        fontSize: 16,
+      },
     gradient: {
         padding: 15,
         alignItems: 'center',
@@ -197,12 +196,12 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: '#fff',
-        fontSize: 16
+        fontSize: 14
     },
     produtoEscolhido: {
-        padding: 20,
+        padding: 10,
         width: WIDTH - 100,
-        borderRadius: 20,
+        borderRadius: 10,
         backgroundColor: 'rgba(255,255,255,0.1)',
         alignItems: 'center',
         justifyContent: 'space-around',
@@ -214,17 +213,17 @@ const styles = StyleSheet.create({
     textEscolha: {
         color: '#fff',
         fontFamily: 'Roboto-Regular',
-        fontSize: 16
+        fontSize: 14
     },
     textProduto: {
         color: '#fff',
         fontFamily: 'Roboto-Medium',
-        fontSize: 24
+        fontSize: 18
     },
     valorContainer: {
         borderRadius: 10,
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
         borderWidth: 1,
         borderColor: '#6202F5',
         alignItems: 'center',
@@ -232,7 +231,7 @@ const styles = StyleSheet.create({
     },
     textValor: {
         color: '#fff',
-        fontSize: 30,
+        fontSize: 24,
         fontFamily: 'Roboto-Medium'
     }
 })

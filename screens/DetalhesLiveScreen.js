@@ -42,19 +42,19 @@ export class DetalhesLiveScreen extends PureComponent {
                     </BaseButton>
                     <View style={styles.footer}>
                         <TouchableOpacity style={styles.footerBtn}>
-                            <Icon name={'play-circle'} size={24} color={'#fff'} />
+                            <Icon name={'play-circle'} size={20} color={'#fff'} />
                             <Text style={styles.textFooterBtn}>ESCUTAR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.footerBtn}>
-                            <Icon name={'plus'} size={24} color={'#fff'} />
+                            <Icon name={'plus'} size={20} color={'#fff'} />
                             <Text style={styles.textFooterBtn}>SEGUIR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity  style={styles.footerBtn}>
-                            <Icon name={'share'} size={24} color={'#fff'} />
+                            <Icon name={'share'} size={20} color={'#fff'} />
                             <Text style={styles.textFooterBtn}>INDICAR</Text>
                         </TouchableOpacity>
                         <TouchableOpacity  style={styles.footerBtn}>
-                            <Icon name={'heart'} size={24} color={'#fff'} />
+                            <Icon name={'heart'} size={20} color={'#fff'} />
                             <Text style={styles.textFooterBtn}>AVALIAR</Text>
                         </TouchableOpacity>
                     </View>
@@ -164,14 +164,14 @@ const styles = StyleSheet.create({
     footer:{
         flexDirection: 'row',
         justifyContent: 'space-around',
-        width: '85%'
+        width: '100%'
     },
     footerBtn:{
         borderRadius: 10,
         borderWidth: 1,
         borderColor: '#6202F5',
         width: 80,
-        padding: 10,
+        padding: 5,
         paddingTop: 20,
         paddingBottom: 20,
         alignItems: 'center',

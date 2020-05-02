@@ -13,9 +13,9 @@ class CriarPerfilScreen extends PureComponent {
       backgroundColor: '#2B2B2B',
       height: 80,
     },
-    headerTitle: <View style={{alignItems: 'center', marginTop: 10}}>
-    <Text style={{color: '#fff', fontSize: 30, fontFamily: 'Roboto-Bold'}}>CRIE SEU PERFIL</Text>
-    <Text style={{color: '#6202F5', fontSize: 30, fontFamily: 'Roboto-Bold', marginTop: 5}}>DE ARTISTA</Text>
+    headerTitle: <View style={{alignItems: 'center', marginTop: 30}}>
+    <Text style={{color: '#fff', fontSize: 24, fontFamily: 'Roboto-Bold'}}>CRIE SEU PERFIL</Text>
+    <Text style={{color: '#6202F5', fontSize: 24, fontFamily: 'Roboto-Bold' }}>DE ARTISTA</Text>
     </View>
   }
 
@@ -44,7 +44,7 @@ class CriarPerfilScreen extends PureComponent {
             placeholderTextColor={'#B6B6B6'}
           />
           <TextInput 
-            style={[styles.input, {height: 100} ]}
+            style={[styles.input, {maxHeight: 90, height: 100} ]}
             underlineColorAndroid="transparent"
             placeholder={'Bio'}
             placeholderTextColor={'#B6B6B6'}
@@ -54,7 +54,7 @@ class CriarPerfilScreen extends PureComponent {
           <View style={styles.inputContainer}>
             <Icon
               name={"instagram"}
-              size={28}
+              size={22}
               color={"#6202F5"}
               style={styles.inputIcon}
             />
@@ -69,7 +69,7 @@ class CriarPerfilScreen extends PureComponent {
           <View style={styles.inputContainer}>
             <Icon
               name={"youtube"}
-              size={28}
+              size={22}
               color={"#6202F5"}
               style={styles.inputIcon}
             />
@@ -84,7 +84,7 @@ class CriarPerfilScreen extends PureComponent {
           <View style={styles.inputContainer}>
             <Icon
               name={"facebook"}
-              size={28}
+              size={22}
               color={"#6202F5"}
               style={styles.inputIcon}
             />
@@ -99,7 +99,7 @@ class CriarPerfilScreen extends PureComponent {
           <View style={styles.inputContainer}>
             <Icon
               name={"spotify"}
-              size={28}
+              size={22}
               color={"#6202F5"}
               style={styles.inputIcon}
             />
@@ -133,35 +133,32 @@ const styles = StyleSheet.create({
   text: { 
     color: '#fff',
     padding: 20,
-    paddingLeft: 70,
-    paddingRight: 70,
     textAlign: 'center'
   },
   form:{
     alignItems: 'center'
   },
-  input:{ 
+  input:{
     width: WIDTH - 100,
-    borderRadius: 10,
+    maxHeight: 50,
+    padding: 15,
     borderWidth: 1,
-    borderColor: '#6202F5',
-    padding: 20,
-    fontSize: 16,
+    borderColor: '#985FEE',
+    borderRadius: 6,
     marginTop: 10,
-  },
-  inputContainer: {
-    marginTop: 10
+    fontSize: 14,
   },
   inputIcon: {
     position: "absolute",
-    top: 26,
+    top: 23,
     left: 15
   },
   button:{
     padding: 20,
     width: WIDTH - 50,
     borderRadius: 6,
-    marginBottom: 200
+    marginTop: 10,
+    marginBottom: 100
   },
   gradient:{
     padding: 15,

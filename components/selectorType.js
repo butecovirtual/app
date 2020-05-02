@@ -40,7 +40,6 @@ const SelectorType = props => {
 
 const styles = StyleSheet.create({
   selectorContainer: {
-    marginTop: 50,
     width: "100%",
     alignItems: "center",
     justifyContent: "space-evenly"

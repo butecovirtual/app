@@ -26,7 +26,8 @@ class CadastroScreen extends PureComponent {
           <Image source={require('../img/logo_cadastro.png')} style={styles.logo} />
         </ImageBackground>
         <View style={styles.loginContainer}>
-          <Text style={styles.title} >Faça seu cadastro</Text>
+          <Text style={styles.title}>Faça seu cadastro</Text>
+          <View style={{alignItems: 'center'}}>
           <TextInput
             placeholder={'Nome de usuário'}
             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
@@ -60,6 +61,8 @@ class CadastroScreen extends PureComponent {
           <View style={styles.footerContainer}>
             <Text style={styles.textCadastro}>Ao me cadastrar eu declaro que li e aceito os <Text style={{ color: '#985FEE' }}>Termos e Condições</Text></Text>
           </View>
+          </View>
+          
 
         </View>
       </View>
@@ -73,7 +76,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#171717"
   },
   bgContainer: {
-    flex: 0.3,
+    flex: 0.5,
     justifyContent: 'flex-start'
   },
   logo: {
@@ -81,26 +84,28 @@ const styles = StyleSheet.create({
   },
   loginContainer: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: 65
   },
   title: {
     color: '#fff',
-    fontSize: 28
+    fontSize: 24,
+    marginLeft: 55
   },
   input: {
     width: WIDTH - 100,
-    padding: 20,
+    maxHeight: 50,
+    padding: 15,
     borderWidth: 1,
     borderColor: '#985FEE',
     borderRadius: 6,
     marginTop: 10,
-    fontSize: 18,
+    fontSize: 14,
   },
-  button: {
-    padding: 20,
-    width: WIDTH - 50,
+  button:{
+    padding: 15,
+    width: WIDTH - 70,
     borderRadius: 6,
+    fontSize: 16,
   },
   gradient: {
     padding: 15,
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
-    fontSize: 18
+    fontSize: 14
   },
   socialLogin: {
     alignItems: 'center',
@@ -124,14 +129,13 @@ const styles = StyleSheet.create({
     margin: 5
   },
   footerContainer: {
-    flex: 0.4,
     alignItems: 'center',
-    padding: 40,
+    padding: 50,
     justifyContent: 'center',
   },
   textCadastro: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 14,
     textAlign: 'center'
   }
 });

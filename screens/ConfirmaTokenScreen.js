@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, TextInput, Keyboard } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import bgImage from '../img/bg_cadastro.png'
-import { BaseButton } from 'react-native-gesture-handler';
+import { BaseButton, ScrollView } from 'react-native-gesture-handler';
 const { width: WIDTH } = Dimensions.get('window')
 
 class ConfirmaTokenScreen extends PureComponent {
@@ -23,7 +23,7 @@ class ConfirmaTokenScreen extends PureComponent {
 
     render() {
         return (
-            <View style={styles.container}>
+            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.container}>
                 <ImageBackground source={bgImage} style={styles.bgContainer}>
                     <Image source={require('../img/logo_cadastro.png')} style={styles.logo} />
                 </ImageBackground>
@@ -92,14 +92,14 @@ class ConfirmaTokenScreen extends PureComponent {
                     </View>
 
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        flexGrow: 1,
         backgroundColor: "#171717"
     },
     bgContainer: {
@@ -111,19 +111,22 @@ const styles = StyleSheet.create({
     },
     loginContainer: {
         flex: 1,
-        padding: 20,
+        margin: 20,
         alignItems: 'center',
         justifyContent: 'flex-start',
     },
     title: {
         color: '#fff',
-        margin: 20,
-        fontSize: 28
+        paddingLeft: 20,
+        marginBottom: 10,
+        fontSize: 24
     },
     subtitle: {
         color: '#fff',
-        margin: 20,
-        fontSize: 16
+        paddingLeft: 20,
+        paddingRight: 25,
+        fontSize: 14,
+        marginBottom: 10
     },
     inputsContainer: {
         width: '90%',
@@ -133,6 +136,7 @@ const styles = StyleSheet.create({
     input: {
         width: 70,
         height: 70,
+        maxWidth: 65,
         padding: 10,
         borderWidth: 1,
         borderColor: '#985FEE',
@@ -140,6 +144,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         fontSize: 50,
         textAlign: 'center',
+        alignItems: 'center',
         color: '#fff'
     },
     button: {
@@ -169,7 +174,6 @@ const styles = StyleSheet.create({
         margin: 5
     },
     footerContainer: {
-        flex: 0.4,
         alignItems: 'center',
         padding: 40,
         justifyContent: 'center',

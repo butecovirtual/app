@@ -37,13 +37,12 @@ const CardType = props => {
 
 const styles = StyleSheet.create({
   titleCard: {
-    fontSize: 24,
+    fontSize: 18,
     color: "#fff",
     fontFamily: 'Roboto-Medium'
   },
   textCard: {
-    fontSize: 14,
-    
+    fontSize: 12,
     color: "#fff",
     fontFamily: 'Roboto-Regular',
     width: 200,
@@ -59,8 +58,10 @@ const styles = StyleSheet.create({
   },
   cardValor:{
     borderRadius: 10,
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
+    maxHeight: 90,
+    maxWidth: 90,
     borderWidth: 1,
     borderColor: '#6202F5',
     alignItems: 'center',

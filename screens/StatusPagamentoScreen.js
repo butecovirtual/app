@@ -17,7 +17,7 @@ export class StatusPagamentoScreen extends PureComponent {
         return (
             <View style={styles.container}>
                 <View style={styles.iconContainer}>
-                    <Icon name={'check'} size={90} color={'#fff'} />
+                    <Icon name={'check'} size={60} color={'#fff'} />
                 </View>
                 <Text style={styles.title}>PAGAMENTO APROVADO!</Text>
                 <Text style={styles.text}>Obrigado por ajudar mais um artista. {'\n'} Divirta-se!</Text>
@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#2B2B2B',
     },
     title: {
-        fontSize: 36,
+        fontSize: 30,
         fontFamily: 'Roboto-Bold',
         color: '#fff',
         textAlign: 'center',
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     },
     iconContainer: {
         backgroundColor: '#6202F5',
-        padding: 30,
+        padding: 20,
         borderRadius: 100
     },
     text: {

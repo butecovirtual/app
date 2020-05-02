@@ -53,8 +53,8 @@ const HomeStack = createStackNavigator(
     mode: "modal",
     navigationOptions: ({ navigation: { goBack } }) => ({ 
       headerTransparent: true,
-      headerLeft: (<Icon name="chevron-left" color={'#fff'} onPress={ () => { goBack() } } size={30} style={{marginLeft: 30}}/>),
-      headerStyle: { marginTop: 30}
+      headerLeft: (<Icon name="chevron-left" color={'#fff'} onPress={ () => { goBack() } } size={24} style={{marginLeft: 30}}/>),
+      headerStyle: { marginTop: 30 }
     })
   }
 );

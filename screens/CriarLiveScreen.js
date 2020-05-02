@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Text, View, StyleSheet, Dimensions, TextInput } from 'react-native'
+import { Text, View, StyleSheet, Dimensions, TextInput, SafeAreaView } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
-import { BaseButton } from 'react-native-gesture-handler'
+import { BaseButton, ScrollView } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { TextInputMask } from 'react-native-masked-text'
 
@@ -33,6 +33,8 @@ export class CriarLiveScreen extends PureComponent {
 
     render() {
         return (
+            <SafeAreaView style={{ flex: 1, backgroundColor: '#2B2B2B' }}>
+                <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
             <View style={styles.container}>
                 <Text style={styles.text}> Para que você possa fazer uma LIVE preciso de mais algumas informações. </Text>
                 <View style={styles.form}>
@@ -123,7 +125,7 @@ export class CriarLiveScreen extends PureComponent {
                         </View>
                     </BaseButton>
 
-                    <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStreamScreen', {user: 'streamer'})}>
+                    <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStreamScreen', { user: 'streamer' })}>
                         <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
                             <Text style={styles.textButton}>Criar LIVE</Text>
                         </LinearGradient>
@@ -134,6 +136,8 @@ export class CriarLiveScreen extends PureComponent {
                     </BaseButton>
                 </View>
             </View>
+            </ScrollView>
+            </SafeAreaView>
         )
     }
 }
@@ -141,14 +145,12 @@ export class CriarLiveScreen extends PureComponent {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginTop: 100,
+        marginTop: 40,
         backgroundColor: '#2B2B2B',
     },
     text: {
         color: '#fff',
         padding: 20,
-        paddingLeft: 70,
-        paddingRight: 70,
         marginTop: 30,
         textAlign: 'center'
     },
@@ -157,19 +159,20 @@ const styles = StyleSheet.create({
     },
     input: {
         width: WIDTH - 100,
-        borderRadius: 10,
+        maxHeight: 50,
+        padding: 15,
         borderWidth: 1,
-        borderColor: '#6202F5',
-        padding: 20,
-        fontSize: 16,
-        marginTop: 10,
-        color: '#fff'
-    },
-    button: {
-        padding: 20,
-        width: WIDTH - 50,
+        borderColor: '#985FEE',
         borderRadius: 6,
+        marginTop: 10,
+        fontSize: 14,
     },
+    button:{
+        padding: 15,
+        width: WIDTH - 70,
+        borderRadius: 6,
+        fontSize: 16,
+      },
     gradient: {
         padding: 15,
         alignItems: 'center',
@@ -177,7 +180,7 @@ const styles = StyleSheet.create({
     },
     textButton: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 14,
         marginLeft: 10
     },
     btnUpload: {
