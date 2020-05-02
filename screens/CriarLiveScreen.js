@@ -123,7 +123,7 @@ export class CriarLiveScreen extends PureComponent {
                         </View>
                     </BaseButton>
 
-                    <BaseButton style={styles.button}>
+                    <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStreamScreen', {user: 'streamer'})}>
                         <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
                             <Text style={styles.textButton}>Criar LIVE</Text>
                         </LinearGradient>

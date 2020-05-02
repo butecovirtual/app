@@ -88,5 +88,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Buteco Virtual requires access to your phone’s camera.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Buteco Virtual requires access to your phone’s Microphone.</string>
 </dict>
 </plist>

@@ -19,6 +19,7 @@ import DetalhesLiveScreen from "./screens/DetalhesLiveScreen";
 import SelecionarProdutoScreen from "./screens/SelecionarProdutoScreen";
 import FormaPagamentoScreen from "./screens/FormaPagamentoScreen";
 import StatusPagamentoScreen from "./screens/StatusPagamentoScreen";
+import LiveStreamScreen from "./screens/LiveStreamScreen";
 
 
 const LoginStack = createStackNavigator(
@@ -44,7 +45,8 @@ const HomeStack = createStackNavigator(
     DetalhesLive: DetalhesLiveScreen,
     SelecionarProduto: SelecionarProdutoScreen,
     FormaPagamento: FormaPagamentoScreen,
-    StatusPagamento: StatusPagamentoScreen
+    StatusPagamento: StatusPagamentoScreen,
+    LiveStreamScreen: LiveStreamScreen
   },
   {
     initialRouteName: "Home",
