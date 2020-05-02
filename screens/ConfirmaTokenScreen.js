@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackg
 import LinearGradient from 'react-native-linear-gradient';
 import bgImage from '../img/bg_cadastro.png'
 import { BaseButton } from 'react-native-gesture-handler';
-import TextInputMask from 'react-native-text-input-mask';
 const { width: WIDTH } = Dimensions.get('window')
 
 class ConfirmaTokenScreen extends PureComponent {
