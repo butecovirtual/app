@@ -1,114 +1,133 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React from 'react';
+import React from "react";
+import { Image, StyleSheet,Text } from "react-native";
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  StatusBar,
-} from 'react-native';
+  createStackNavigator,
+  createSwitchNavigator,
+  createDrawerNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import HomeScreen from "./screens/HomeScreen";
+import LoginScreen from "./screens/LoginScreen";
+import CadastrarScreen from "./screens/CadastrarScreen";
+import CustomDrawerContentComponent from "./screens/CustomDrawerContentComponent";
+import ConfirmaTokenScreen from "./screens/ConfirmaTokenScreen";
+import CriarPerfilScreen from "./screens/CriarPerfilScreen";
+import PerfilScreen from "./screens/PerfilScreen";
+import CriarLiveScreen from "./screens/CriarLiveScreen";
+import DetalhesLiveScreen from "./screens/DetalhesLiveScreen";
+import SelecionarProdutoScreen from "./screens/SelecionarProdutoScreen";
+import FormaPagamentoScreen from "./screens/FormaPagamentoScreen";
+import StatusPagamentoScreen from "./screens/StatusPagamentoScreen";
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-const App: () => React$Node = () => {
-  return (
-    <>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
-  );
-};
+const LoginStack = createStackNavigator(
+  {
+    Login: LoginScreen,
+    Cadastrar: CadastrarScreen,
+    ConfirmaToken: ConfirmaTokenScreen
+  },
+  {
+    initialRouteName: "Login",
+    mode: "modal"
+  }
+);
+
+const HomeStack = createStackNavigator(
+  {
+    Home: HomeScreen,
+    Cadastrar: CadastrarScreen,
+    ConfirmaToken: ConfirmaTokenScreen,
+    CriarPerfil: CriarPerfilScreen,
+    Perfil: PerfilScreen,
+    CriarLive: CriarLiveScreen,
+    DetalhesLive: DetalhesLiveScreen,
+    SelecionarProduto: SelecionarProdutoScreen,
+    FormaPagamento: FormaPagamentoScreen,
+    StatusPagamento: StatusPagamentoScreen
+  },
+  {
+    initialRouteName: "Home",
+    mode: "modal",
+    navigationOptions: ({ navigation: { goBack } }) => ({ 
+      headerTransparent: true,
+      headerLeft: (<Icon name="chevron-left" color={'#fff'} onPress={ () => { goBack() } } size={30} style={{marginLeft: 30}}/>),
+      headerStyle: { marginTop: 30}
+    })
+  }
+);
+
+const DrawerNavigation = createBottomTabNavigator(
+  {
+    Home: {
+      screen: HomeStack,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+            <Icon
+                name="home"
+                color={tintColor}
+                size={18}
+            />
+        )
+    })
+    },
+    CriarLive: {
+      screen: HomeStack,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor, navigation }) => (
+          <Image
+          source={require("./img/btn-live.png")}
+          resizeMode="contain"
+        />
+        )
+    })
+    },
+    Perfil: {
+      screen: HomeStack,
+      navigationOptions: () => ({
+        tabBarIcon: ({tintColor}) => (
+            <Icon
+                name="user-friends"
+                color={tintColor}
+                size={18}
+            />
+        )
+    })
+    },
+  },
+  {
+    initialRouteName: "Home",
+    mode: "card",
+    tabBarOptions: {
+      showLabel: false, // hide labels
+      activeTintColor: '#B483FF', // active icon color
+      inactiveTintColor: '#fff',  // inactive icon color
+      style: {
+          height: 50,
+          padding: 15,
+          backgroundColor: '#0B0B0B' // TabBar background
+      }
+  }
+  }
+);
+
+
+export default createSwitchNavigator(
+  {
+    HomeStack: {
+      screen: DrawerNavigation,
+      path: ''      
+    },
+    LoginStack: LoginStack
+  },
+  {
+    initialRouteName: "LoginStack",
+  }
+);
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
-  },
-  engine: {
-    position: 'absolute',
-    right: 0,
-  },
-  body: {
-    backgroundColor: Colors.white,
-  },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-    color: Colors.black,
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
-});
-
-export default App;
+  logo: {
+    width: 30,
+    margin: 10
+  }
+})
