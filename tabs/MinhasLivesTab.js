@@ -15,10 +15,10 @@ class CardItem extends PureComponent {
 
     render() {
         const { data: { when, status, valueBase, valueTable, title } } = this.props;
-        const hourLive = moment(when).format('HH:mm');
-        const formattedValueBase = formatNumberToCurrency(parseFloat(valueBase))
-        const formattedValueTable = formatNumberToCurrency(parseFloat(valueTable))
-        const dateLive = moment(when).format('DD/MM');
+        const hourLive = when && moment(when).format('HH:mm')
+        const formattedValueBase = valueBase && formatNumberToCurrency(parseFloat(valueBase))
+        const formattedValueTable = valueTable && formatNumberToCurrency(parseFloat(valueTable))
+        const dateLive = when &&  moment(when).format('DD/MM');
         return (
             <BaseButton style={{ flex: 1, padding: 16, flexDirection: 'row', width: '100%' }} onPress={this.details}>
                 <View style={styles.cardData}>
@@ -54,7 +54,7 @@ class CardItem extends PureComponent {
 export class MinhasLivesTab extends PureComponent {
 
     componentDidMount() {
-        const { getLives, user: { id, artist: { _id } } } = this.props
+        const { getLives, user: { id, artist } } = this.props
         this.props.getLives(id)
 
     }
@@ -65,7 +65,9 @@ export class MinhasLivesTab extends PureComponent {
             <View style={styles.tab}>
                 {
                     lives.length == 0 &&
+                    <View style={{alignItems: "center"}}>
                     <Text style={{ color: '#fff', marginTop: 30 }}> Você não possui nenhuma LIVE registrada. </Text>
+                    </View>
                 }
                 <FlatList
                     style={styles.list}

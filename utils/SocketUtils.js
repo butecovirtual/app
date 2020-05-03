@@ -75,11 +75,17 @@ const emitSendMessage = (liveId, userId, message) => {
 
 const handleOnSendReact = () => {
     socket.on('react', (data) => {
-        console.tron.log(`react recived ${data}`);
+        console.tron.log(`react recived ${JSON.stringify(data)}`);
+        if(data.reaction === "like"){
+            const countHeart = Utils.getContainer().state.countHeart;
+            Utils.getContainer().setState({countHeart: countHeart + 1});
+        }
+            
     });
 };
 
 const emitReactLive = (liveId, userId, reaction) => {
+    console.tron.log(`sendingn react ${reaction}`);
     socket.emit('react', {
         liveId,
         userId,
@@ -100,7 +106,6 @@ const emitLeaveLive = (liveId, userId) => {
         liveId,
         userId
     });
-    socket.close()
 };
 
 const handleOnLeaveLive = () => {

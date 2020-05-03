@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Keyboard, SafeAreaView, Platform, TextInput } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Keyboard, LayoutAnimation, SafeAreaView, Platform, TextInput } from 'react-native'
 import { NodeCameraView, NodePlayerView } from 'react-native-nodemediaclient';
 import { BaseButton, ScrollView } from 'react-native-gesture-handler';
 import { connect } from "react-redux";
@@ -7,7 +7,9 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
 import KeyboardAccessory from 'react-native-sticky-keyboard-accessory';
 import SocketUtils from '../utils/SocketUtils';
+import FloatingHearts from '../components/FloatingHearts';
 import Utils from '../utils/Utils';
+import { StackActions, NavigationActions } from 'react-navigation';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
@@ -33,6 +35,7 @@ export class LiveStreamScreen extends Component {
             keyboardHeight: 0,
             visibleListMessages: true,
             listMessages: [],
+            countHeart: 0
         };
     }
 
@@ -44,6 +47,7 @@ export class LiveStreamScreen extends Component {
         SocketUtils.emitQtdViewers()
         SocketUtils.handleJoinLive()
         SocketUtils.handleOnLeaveLive()
+        SocketUtils.handleOnSendReact()
         Utils.setContainer(this)
         if (state.params != undefined)
             if (state.params.user) {
@@ -88,7 +92,10 @@ export class LiveStreamScreen extends Component {
         const { idStream } = this.state
         const { user: { id }, navigation: { navigate } } = this.props
         SocketUtils.emitLeaveLive(idStream, id)
-        navigate('HomeStack');
+        if (this.vbViewer !== null && this.vbViewer !== undefined) {
+            this.vbViewer.stop();
+            navigate('Home')
+        }
     }
 
     setDropZoneValues = ({ nativeEvent }) => {
@@ -111,16 +118,25 @@ export class LiveStreamScreen extends Component {
     sendMessage = () => {
         const { message, idStream, listMessages } = this.state
         const { user: { id, username }, navigation: { navigate } } = this.props
-        SocketUtils.emitSendMessage(idStream, id, message)
-        this.setState({ message: null })
-        Keyboard.dismiss()
-        const newListMessages = listMessages.slice();
-        newListMessages.push({ username: username, message });
-        this.setState({
-            listMessages: newListMessages,
-            visibleListMessages: true,
-        });
+        if (message != null && message.length > 1) {
+            SocketUtils.emitSendMessage(idStream, id, message)
+            this.setState({ message: null })
+            Keyboard.dismiss()
+            const newListMessages = listMessages.slice();
+            newListMessages.push({ username: username, message });
+            this.setState({
+                listMessages: newListMessages,
+                visibleListMessages: true,
+            });
+        }
     }
+
+    onPressHeart = () => {
+        const { message, idStream, listMessages } = this.state
+        const { user: { id, username }, navigation: { navigate } } = this.props
+        this.setState({ countHeart: this.state.countHeart + 1 });
+        SocketUtils.emitReactLive(idStream, id, 'like');
+    };
 
     renderListMessages = () => {
         const { listMessages, visibleListMessages } = this.state;
@@ -180,7 +196,6 @@ export class LiveStreamScreen extends Component {
                                 underlineColorAndroid="transparent"
                                 value={message}
                                 autoCapitalize={'none'}
-                                autoCorrect={false}
                                 onChangeText={this.handleMessage}
                                 onFocus={() => {
                                     this.setState({ visibleListMessages: false });
@@ -198,6 +213,7 @@ export class LiveStreamScreen extends Component {
                             </TouchableOpacity>
                             <TouchableOpacity
                                 style={styles.wrapIconHeart}
+                                onPress={this.onPressHeart}
                                 activeOpacity={0.6}>
                                 <Icon name="heart" size={22} color={'#6202F5'} />
                             </TouchableOpacity>
@@ -247,6 +263,7 @@ export class LiveStreamScreen extends Component {
                                 </TouchableOpacity>
                                 <TouchableOpacity
                                     style={styles.wrapIconHeart}
+                                    onPress={this.onPressHeart}
                                     activeOpacity={0.6}>
                                     <Icon name="heart" size={22} color={'#6202F5'} />
                                 </TouchableOpacity>
@@ -262,7 +279,7 @@ export class LiveStreamScreen extends Component {
 
 
     render() {
-        const { user, publishBtnTitle, idStream, isPublish, cameraId, countViewer } = this.state
+        const { user, publishBtnTitle, idStream, isPublish, cameraId, countViewer, countHeart } = this.state
         return (
             <View style={styles.container}>
 
@@ -300,6 +317,7 @@ export class LiveStreamScreen extends Component {
                                 </View>
                                 {this.renderGroupInput()}
                                 {this.renderListMessages()}
+                                <FloatingHearts count={countHeart} style={styles.wrapGroupHeart} />
                             </>
                         }
                         <BaseButton onPress={this.stopLive} style={styles.btnClose}>
@@ -342,6 +360,7 @@ export class LiveStreamScreen extends Component {
                                     </View>
                                     {this.renderGroupInput()}
                                     {this.renderListMessages()}
+                                    <FloatingHearts count={countHeart} style={styles.wrapGroupHeart} />
                                 </>
                             }
                         </View>
@@ -406,7 +425,7 @@ const styles = StyleSheet.create({
         right: 0,
         height: 180,
         zIndex: 2
-      },
+    },
     wrapBottomIOS: {
         flexDirection: 'column',
         position: 'absolute',
@@ -508,7 +527,10 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
         borderRadius: 10,
         alignItems: 'center'
-      },
+    },
+    wrapGroupHeart: {
+        marginBottom: 70
+    },
 });
 
 
