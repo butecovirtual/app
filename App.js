@@ -34,6 +34,7 @@ const LoginStack = createStackNavigator(
   }
 );
 
+
 const HomeStack = createStackNavigator(
   {
     Home: HomeScreen,
@@ -59,7 +60,7 @@ const HomeStack = createStackNavigator(
   }
 );
 
-const DrawerNavigation = createBottomTabNavigator(
+const BottomTabNavigator = createBottomTabNavigator(
   {
     Home: {
       screen: HomeStack,
@@ -117,10 +118,11 @@ const DrawerNavigation = createBottomTabNavigator(
 export default createSwitchNavigator(
   {
     HomeStack: {
-      screen: DrawerNavigation,
+      screen: BottomTabNavigator,
       path: ''      
     },
-    LoginStack: LoginStack
+    LoginStack: LoginStack,
+    LiveStack: LiveStreamScreen
   },
   {
     initialRouteName: "LoginStack",

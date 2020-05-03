@@ -10,7 +10,7 @@ class CardItem extends PureComponent {
 
     details = () => {
         const { data: { id }, navigation: { navigate } } = this.props
-        navigate('LiveStream', {user: 'streamer', idStream: id})
+        navigate('LiveStack', { user: 'streamer', idStream: id });
     }
 
     render() {

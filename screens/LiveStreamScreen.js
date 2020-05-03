@@ -27,6 +27,7 @@ export class LiveStreamScreen extends Component {
 
     componentDidMount() {
         const { navigation: { state } } = this.props;
+        console.tron.log(this.props)
         if (state.params != undefined)
             if (state.params.user)
                 this.setState({ user: state.params.user })
