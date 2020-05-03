@@ -94,6 +94,7 @@ class LoginScreen extends PureComponent {
             placeholderTextColor={'rgba(255, 255, 255, 0.7)'}
             underlineColorAndroid='transparent'
             autoCapitalize={'none'}
+            autoCorrect={false}
             style={styles.input}
             onChangeText={this.handleUsername}
             onBlur={() =>
@@ -155,6 +156,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#985FEE',
     borderRadius: 6,
+    color: '#fff',
     marginTop: 10,
     fontSize: 14,
   },

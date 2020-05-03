@@ -49,7 +49,7 @@ export const normalizePhone = (value, previousValue) => {
 
 export const removeCharsCPF = cpf => cpf.replace(/[^a-zA-Z0-9]/g, "");
 
-export const formatUsername = username => username.replace(/[^a-z]/g, "");
+export const formatUsername = username => username.replace(/[^a-z0-9]/g, "");
 
 export const removeCharsMobile = mobile => mobile.replace(/[^0-9]/g, "");
 

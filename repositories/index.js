@@ -15,7 +15,6 @@ export const instance = API => {
             if (error && error.response && error.response.data.message) {
                 DropDownHolder.alert("error", "Ops :(", error.response.data.message);
             }
-            console.tron.log("CHEGOU", error)
             return Promise.reject(error);
         });
     return instance;
