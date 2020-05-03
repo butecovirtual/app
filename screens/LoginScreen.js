@@ -1,8 +1,13 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, Image,TouchableOpacity, Dimensions,  ImageBackground, SafeAreaView, TextInput } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { connect } from "react-redux";
+import { addAuthToken } from "../repositories";
 import bgImage from '../img/bg_login.png'
 import { BaseButton } from 'react-native-gesture-handler';
+import { validate } from "../utils/validation";
+
+import TextError from "../components/textError";
 
 const { width: WIDTH } = Dimensions.get('window')
 
@@ -14,11 +19,69 @@ class LoginScreen extends PureComponent {
 
   constructor(props) {
     super(props);
+    this.loadPersistedData();
     this.state = {
+      username: null,
+      errorUsername: null,
+      userNameErrorMessage: null
     };
   }
 
+  loadPersistedData = () => {
+    const {
+      user,
+      navigation: { navigate }
+    } = this.props;
+    if (user && Object.keys(user).length > 0) {
+      console.tron.log(user)
+      if(user.token){
+        addAuthToken(user.token);
+        navigate("HomeStack");
+      }
+      else navigate("Login");
+      
+    }
+  };
+
+  handleUsername = (username) => {
+    const v = validate("username", username);
+    this.setState({ username, errorUsername: !v[0], usernameErrorMessage: v[1] });
+  };
+
+  logar = () => {
+    const { username } = this.state;
+    const {
+      navigation: { navigate },
+      checkLogin
+    } = this.props;
+
+    const payload = { username };
+
+    if (this.validateForm()) {
+      checkLogin(payload)
+        .then(() => navigate("ConfirmaToken"))
+        .catch();
+    }
+  };
+
+  validateForm = () => {
+    const { username } = this.state;
+    const validateUsername = validate("username", username);
+    this.setState({
+      errorUsername: !validateUsername[0],
+      usernameErrorMessage: validateUsername[1]
+    });
+    return validateUsername[0];
+  };
+
   render() {
+
+    const {
+      username,
+      errorUsername,
+      usernameErrorMessage,
+    } = this.state;
+
     return (
       <View style={styles.container}>
         <ImageBackground source={bgImage} style={styles.bgContainer}>
@@ -32,8 +95,13 @@ class LoginScreen extends PureComponent {
             underlineColorAndroid='transparent'
             autoCapitalize={'none'}
             style={styles.input}
+            onChangeText={this.handleUsername}
+            onBlur={() =>
+              this.setState({ errorUserName: false, userNameErrorMessage: undefined })
+            }
           />
-          <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('ConfirmaToken')}>
+          <TextError showError={errorUsername} errorMessage={usernameErrorMessage} />
+          <BaseButton style={styles.button} onPress={this.logar}>
             <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
               <Text style={styles.text}>Entrar</Text>
             </LinearGradient>
@@ -128,4 +196,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+const mapState = state => ({
+  user: state.user,
+  loading: state.loading.effects.user.checkLoginAsync,
+});
+
+const mapDispatch = dispatch => ({
+  checkLogin: payload => dispatch.user.checkLoginAsync(payload),
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(LoginScreen);

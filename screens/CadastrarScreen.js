@@ -1,10 +1,14 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, TextInput } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { connect } from "react-redux";
 import bgImage from '../img/bg_cadastro.png'
 import { BaseButton } from 'react-native-gesture-handler';
 import { TextInputMask } from 'react-native-masked-text'
 const { width: WIDTH } = Dimensions.get('window')
+import { removeCharsMobile, formatUsername } from '../utils/formatters'
+import TextError from '../components/textError';
+import { validate } from '../utils/validation';
 
 class CadastroScreen extends PureComponent {
 
@@ -15,11 +19,64 @@ class CadastroScreen extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      celular: null
+      username: null,
+      celular: null,
+      errorUsername: false,
+      usernameErrorMessage: null,
+      errorMobile: false,
+      mobileErrorMessage: null,
     };
   }
 
+  handleUsername = (username) => {
+    const v = validate("username", username);
+    this.setState({ username: formatUsername(username.toLowerCase()), errorUsername: !v[0], usernameErrorMessage: v[1] });
+  };
+
+  handleMobile = (mobile) => {
+    const v = validate("phoneNumber", mobile);
+    this.setState({ celular: mobile, errorMobile: !v[0], mobileErrorMessage: v[1] });
+  };
+
+  register = () => {
+    const { username, celular } = this.state;
+    const {
+      navigation: { navigate },
+      register
+    } = this.props;
+
+    const payload = { username, mobile: removeCharsMobile(celular) };
+
+    if (this.validateForm()) {
+      register(payload)
+        .then(() => navigate("ConfirmaToken"))
+        .catch();
+    }
+  }
+
+  validateForm = () => {
+    const { username, celular } = this.state;
+    const validateUsername = validate("username", username);
+    const validateMobile = validate("phoneNumber", celular);
+    this.setState({
+      errorUsername: !validateUsername[0],
+      usernameErrorMessage: validateUsername[1],
+      errorMobile: !validateMobile[0],
+      mobileErrorMessage: validateMobile[1],
+    });
+    return validateUsername[0] && validateMobile[0];
+  };
+
   render() {
+
+    const {
+      username,
+      errorUsername,
+      usernameErrorMessage,
+      errorMobile,
+      mobileErrorMessage
+    } = this.state;
+    
     return (
       <View style={styles.container}>
         <ImageBackground source={bgImage} style={styles.bgContainer}>
@@ -34,7 +91,13 @@ class CadastroScreen extends PureComponent {
             underlineColorAndroid='transparent'
             autoCapitalize={'none'}
             style={styles.input}
+            value={this.state.username}
+            onChangeText={this.handleUsername}
+            onBlur={() =>
+              this.setState({ errorUserName: false, userNameErrorMessage: undefined })
+            }
           />
+          <TextError showError={errorUsername} errorMessage={usernameErrorMessage} />
           <TextInputMask
             type={'cel-phone'}
             options={{
@@ -47,13 +110,10 @@ class CadastroScreen extends PureComponent {
             underlineColorAndroid='transparent'
             style={styles.input}
             value={this.state.celular}
-            onChangeText={text => {
-              this.setState({
-                celular: text
-              })
-            }}
+            onChangeText={this.handleMobile}
           />
-          <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('ConfirmaToken')}>
+          <TextError showError={errorMobile} errorMessage={mobileErrorMessage} />
+          <BaseButton style={styles.button} onPress={this.register}>
             <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
               <Text style={styles.text}>Cadastrar</Text>
             </LinearGradient>
@@ -140,4 +200,16 @@ const styles = StyleSheet.create({
   }
 });
 
-export default CadastroScreen;
+const mapState = state => ({
+  user: state.user,
+  loading: state.loading.effects.live.createUserAsync,
+});
+
+const mapDispatch = dispatch => ({
+  register: payload => dispatch.user.createUserAsync(payload),
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(CadastroScreen);

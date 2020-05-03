@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, ImageBackground, SafeAreaView, TextInput, Keyboard } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
+import { connect } from "react-redux";
 import bgImage from '../img/bg_cadastro.png'
 import { BaseButton, ScrollView } from 'react-native-gesture-handler';
 const { width: WIDTH } = Dimensions.get('window')
@@ -14,12 +15,42 @@ class ConfirmaTokenScreen extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            token: null
         };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.refs['key1'].focus()
     }
+
+
+
+    logar = () => {
+        const { token } = this.state;
+        const { navigation: { navigate }, login, user: { username } } = this.props;
+        console.tron.log(this.props)
+        console.tron.log(this.state)
+        const payload = { username, token };
+
+        if (username && token) {
+            login(payload)
+                .then(() => navigate("HomeStack"))
+                .catch();
+        }
+    };
+
+
+    handleToken = async (token) => {
+        if (this.state.token == null)
+            await this.setState({ token });
+        else
+            await this.setState({ token: this.state.token + token });
+        if (this.state.token.length < 4)
+            this.refs[`key${this.state.token.length + 1}`].focus()
+        if (this.state.token.length == 4) {
+            this.logar()
+        }
+    };
 
     render() {
         return (
@@ -38,9 +69,7 @@ class ConfirmaTokenScreen extends PureComponent {
                             underlineColorAndroid='transparent'
                             autoCapitalize={'none'}
                             style={styles.input}
-                            onChangeText={(key1) => {
-                                key1 != "" && this.refs['key2'].focus()
-                            }}
+                            onChangeText={this.handleToken}
                         />
                         <TextInput
                             ref={'key2'}
@@ -49,13 +78,7 @@ class ConfirmaTokenScreen extends PureComponent {
                             underlineColorAndroid='transparent'
                             autoCapitalize={'none'}
                             style={styles.input}
-                            onChangeText={(key2) => {
-                                key2 != "" && this.refs['key3'].focus()
-                            }}
-                            onKeyPress={({ nativeEvent }) => {
-                                nativeEvent.key === 'Backspace' &&
-                                this.refs['key1'].focus()
-                            }}
+                            onChangeText={this.handleToken}
                         />
                         <TextInput
                             ref={'key3'}
@@ -64,13 +87,7 @@ class ConfirmaTokenScreen extends PureComponent {
                             underlineColorAndroid='transparent'
                             autoCapitalize={'none'}
                             style={styles.input}
-                            onChangeText={(key3) => {
-                                key3 != "" && this.refs['key4'].focus()
-                            }}
-                            onKeyPress={({ nativeEvent }) => {
-                                nativeEvent.key === 'Backspace' &&
-                                this.refs['key2'].focus()
-                            }}
+                            onChangeText={this.handleToken}
                         />
                         <TextInput
                             ref={'key4'}
@@ -79,11 +96,9 @@ class ConfirmaTokenScreen extends PureComponent {
                             underlineColorAndroid='transparent'
                             autoCapitalize={'none'}
                             style={styles.input}
+                            onChangeText={this.handleToken}
                             onKeyPress={({ nativeEvent }) => {
-                                nativeEvent.key === 'Backspace' &&
-                                this.refs['key3'].focus()
                                 Keyboard.dismiss()
-                                this.props.navigation.navigate('HomeStack')
                             }}
                         />
                     </View>
@@ -185,4 +200,17 @@ const styles = StyleSheet.create({
     }
 });
 
-export default ConfirmaTokenScreen;
+const mapState = state => ({
+    user: state.user,
+    loading: state.loading.effects.user.signInAsync,
+});
+
+const mapDispatch = dispatch => ({
+    login: payload => dispatch.user.signInAsync(payload),
+});
+
+export default connect(
+    mapState,
+    mapDispatch
+)(ConfirmaTokenScreen);
+

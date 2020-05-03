@@ -29,11 +29,19 @@ YellowBox.ignoreWarnings([
 ]);
 
 const loading = createLoadingPlugin({
-  whitelist: [""]
+  whitelist: [
+    "user/checkLoginAsync",
+    "user/signInAsync",
+    "user/createUserAsync",
+    "user/getUserAsync",
+    "live/createLiveAsync",
+    "live/getLivesArtistAsync",
+    "artist/createArtistAsync"
+  ]
 });
 
 const persistPlugin = createRematchPersist({
-  whitelist: [""],
+  whitelist: ["user"],
   storage: AsyncStorage,
   version: 1
 });

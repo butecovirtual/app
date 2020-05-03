@@ -46,7 +46,7 @@ const HomeStack = createStackNavigator(
     SelecionarProduto: SelecionarProdutoScreen,
     FormaPagamento: FormaPagamentoScreen,
     StatusPagamento: StatusPagamentoScreen,
-    LiveStreamScreen: LiveStreamScreen
+    LiveStream: LiveStreamScreen
   },
   {
     initialRouteName: "Home",

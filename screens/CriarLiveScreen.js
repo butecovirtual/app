@@ -1,9 +1,13 @@
 import React, { PureComponent } from 'react'
 import { Text, View, StyleSheet, Dimensions, TextInput, SafeAreaView } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import { connect } from "react-redux";
 import { BaseButton, ScrollView } from 'react-native-gesture-handler'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { TextInputMask } from 'react-native-masked-text'
+import moment from 'moment';
+import { removeCharsCurrency } from '../utils/formatters'
+import { StackActions, NavigationActions } from 'react-navigation';
 
 
 const { width: WIDTH } = Dimensions.get('window')
@@ -24,11 +28,43 @@ export class CriarLiveScreen extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            nomeLive: null,
             dataLive: null,
             horaInicio: null,
             valorEntrada: null,
             valorMesa: null
         };
+    }
+
+    componentDidMount(){
+        const { user:  { artist }, navigation: { dispatch }} = this.props
+        if(!artist){
+            const resetAction = StackActions.reset({
+                index: 1,
+                actions: [
+                    NavigationActions.navigate({ routeName: 'Home' }),
+                    NavigationActions.navigate({ routeName: 'CriarPerfil' }),
+                ]
+                });
+                dispatch(resetAction);
+        }
+    }
+
+    register = () => {
+        const { create, navigation: { navigate }} = this.props
+        const { nomeLive, dataLive, horaInicio, valorMesa, valorEntrada } = this.state
+        const dtLive = moment(`${dataLive} ${horaInicio}`, 'DD/MM/YYYY HH:mm')
+        console.tron.log(dtLive)
+        if(dataLive && horaInicio && valorMesa && valorEntrada)
+            create({
+                title: nomeLive,
+                when: dtLive,
+                valueBase: parseFloat(removeCharsCurrency(valorEntrada)),
+                valueTable: parseFloat(removeCharsCurrency(valorMesa))
+            })
+            .then(() => navigate("Home"))
+            .catch();
+
     }
 
     render() {
@@ -43,6 +79,11 @@ export class CriarLiveScreen extends PureComponent {
                         underlineColorAndroid="transparent"
                         placeholder={'Título da LIVE'}
                         placeholderTextColor={'#B6B6B6'}
+                        onChangeText={text => {
+                                this.setState({
+                                    nomeLive: text
+                                })
+                            }}
                     />
                     <View style={{ flexDirection: 'row', width: WIDTH - 100, justifyContent: 'space-between' }}>
                         <TextInputMask
@@ -125,7 +166,7 @@ export class CriarLiveScreen extends PureComponent {
                         </View>
                     </BaseButton>
 
-                    <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStreamScreen', { user: 'streamer' })}>
+                    <BaseButton style={styles.button} onPress={this.register}>
                         <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
                             <Text style={styles.textButton}>Criar LIVE</Text>
                         </LinearGradient>
@@ -193,4 +234,17 @@ const styles = StyleSheet.create({
     }
 });
 
-export default CriarLiveScreen
+const mapState = state => ({
+    user: state.user,
+    loading: state.loading.effects.live.createLiveAsync,
+  });
+  
+  const mapDispatch = dispatch => ({
+    create: payload => dispatch.live.createLiveAsync(payload),
+  });
+  
+  export default connect(
+    mapState,
+    mapDispatch
+  )(CriarLiveScreen);
+  

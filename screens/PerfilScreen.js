@@ -1,9 +1,11 @@
 import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, ImageBackground } from 'react-native';
 import { Image, Tab, Tabs, TabHeading  } from 'native-base';
+import { connect } from "react-redux";
 import { ScrollView } from 'react-native-gesture-handler';
 import Tab1 from '../tabs/PerfilArtistaTab';
 import Tab2 from '../tabs/MinhasLivesTab';
+import { normalizePhone } from '../utils/formatters'
 
 class PerfilScreen extends PureComponent {
 
@@ -21,7 +23,12 @@ class PerfilScreen extends PureComponent {
     };
   }
 
+  componentDidMount(){
+    this.props.getUser()
+  }
+
   render() {
+    const { user: { username, mobile, artist }   } = this.props
     return (
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
@@ -47,14 +54,14 @@ class PerfilScreen extends PureComponent {
             <Text style={styles.label}>Celular</Text>
           </View>
           <View style={styles.profile}>
-            <Text style={styles.value}>@kamila</Text>
-            <Text style={styles.value}>(31)9****-2376</Text>
+            <Text style={styles.value}>{username ? `@${username}` : null}</Text>
+            <Text style={styles.value}>{mobile ? normalizePhone(mobile) : null}</Text>
           </View>
         </View>
         </View>
         <Tabs>
           <Tab heading={ <TabHeading style={{backgroundColor: '#6202F5'}}><Text style={{color: '#fff'}}>ARTISTA</Text></TabHeading>}>
-            <Tab1 navigation={this.props.navigation} />
+            <Tab1 navigation={this.props.navigation} user={this.props.user} logout={this.props.logout} />
           </Tab>
           <Tab heading={ <TabHeading style={{backgroundColor: '#2B2B2B'}}><Text style={{color: '#fff'}}>MINHAS LIVES</Text></TabHeading>}>
             <Tab2 navigation={this.props.navigation} />
@@ -131,4 +138,20 @@ const styles = StyleSheet.create({
 })
 
 
-export default PerfilScreen;
+const mapState = state => ({
+  user: state.user,
+  loadingUser: state.loading.effects.user.getUserAsync,
+  loadingLives: state.loading.effects.live.getLivesArtistAsync,
+});
+
+const mapDispatch = dispatch => ({
+  getUser: () => dispatch.user.getUserAsync(),
+  getLivesArtist: (id) => dispatch.live.getLivesArtistAsync(id),
+  logout: () => dispatch.user.clearStores()
+});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(PerfilScreen);
+
