@@ -19,7 +19,7 @@ export class DetalhesLiveScreen extends PureComponent {
                             <Text style={styles.labelHora}>19h</Text>
                         </View>
                         <View style={styles.bandaContainer}>
-                            <Text style={styles.labelBanda}>DUETÊ</Text>
+                            <Text style={styles.labelBanda}>BANDA DA TERESA</Text>
                             <Text style={styles.labelGenero}>Pop/Rock</Text>
                         </View>
                         <View style={styles.rightContainer}>
@@ -32,7 +32,7 @@ export class DetalhesLiveScreen extends PureComponent {
                     </View>
                     <View style={styles.bioContainer}>
                         <Text style={styles.labelBio}>
-                            A Duetê é uma banda de pop rock formada em Belo Horizonte no ano de 2017. O trio apresenta um show de música autorale repertório cover. É formada por Costa (vocal e guitarra), Lamac (vocal e baixo) e Peixe (vocal e bateria). Juntos há anos na busca da consolidação de um sonho coletivo, o grupo evidencia o sentimento e a vivência de cada um dos integrantes embalados em forma de música. Suas principais influências vêm do rock e do reggae.
+                            A Banda da Teresa é uma banda de pop rock formada em Belo Horizonte no ano de 2017. O trio apresenta um show de música autorale repertório cover. É formada por Costa (vocal e guitarra), Lamac (vocal e baixo) e Peixe (vocal e bateria). Juntos há anos na busca da consolidação de um sonho coletivo, o grupo evidencia o sentimento e a vivência de cada um dos integrantes embalados em forma de música. Suas principais influências vêm do rock e do reggae.
                         </Text>
                     </View>
                     <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('SelecionarProduto')}>
@@ -106,11 +106,13 @@ const styles = StyleSheet.create({
     },
     bandaContainer: {
         alignItems: 'center',
+        width: 100
     },
     labelBanda: {
         color: '#fff',
         fontFamily: 'Roboto-Bold',
-        fontSize: 24
+        fontSize: 20,
+        textAlign: 'center'
     },
     labelGenero: {
         color: '#fff',

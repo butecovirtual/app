@@ -32,12 +32,28 @@ class PerfilScreen extends PureComponent {
     return (
       <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
-        <ImageBackground source={require('../img/cover-profile.jpg')} style={{ width: '100%', height: 250, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+        {
+          username === 'teresaoficial' ?
+          <ImageBackground source={require('../img/cover-profile-teresa.jpg')} style={{ width: '100%', height: 250, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
           <View style={styles.btnAlterar}>
             <Text style={styles.textBtn}>Alterar</Text>
           </View>
         </ImageBackground>
-        <ImageBackground source={require('../img/avatar-profile.jpg')} style={{ width: 110, height: 110, position: 'absolute', top: 180, left: 20 }} imageStyle={{ borderRadius: 100, borderWidth: 5, borderColor: '#6202F5' }}></ImageBackground>
+          :
+          <ImageBackground source={require('../img/cover-profile.jpg')} style={{ width: '100%', height: 250, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+          <View style={styles.btnAlterar}>
+            <Text style={styles.textBtn}>Alterar</Text>
+          </View>
+        </ImageBackground>
+        }
+        
+        {
+          username === 'teresaoficial' ? 
+          <ImageBackground source={require('../img/avatar-profile-teresa.jpg')} style={{ width: 110, height: 110, position: 'absolute', top: 180, left: 20 }} imageStyle={{ borderRadius: 100, borderWidth: 5, borderColor: '#6202F5' }}></ImageBackground>
+          :
+          <ImageBackground source={require('../img/avatar-profile.jpg')} style={{ width: 110, height: 110, position: 'absolute', top: 180, left: 20 }} imageStyle={{ borderRadius: 100, borderWidth: 5, borderColor: '#6202F5' }}></ImageBackground>
+        }
+        
         <View style={styles.socialData}>
           <View style={styles.cardSocial}>
             <Text style={styles.titleSocial}>345</Text>

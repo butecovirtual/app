@@ -14,7 +14,7 @@ const livesNow = [
   },
   {
     cover: require('../img/artists/faca-amolada.jpg'),
-    artist: 'Faca Amolada',
+    artist: 'Duetê',
     genre: 'MPB'
   },
   {

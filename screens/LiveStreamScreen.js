@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Keyboard, LayoutAnimation, SafeAreaView, Platform, TextInput, PermissionsAndroid } from 'react-native'
 import { NodeCameraView, NodePlayerView } from 'react-native-nodemediaclient';
-import { BaseButton, ScrollView } from 'react-native-gesture-handler';
+import { BaseButton, ScrollView, RectButton } from 'react-native-gesture-handler';
 import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,6 +10,7 @@ import SocketUtils from '../utils/SocketUtils';
 import FloatingHearts from '../components/FloatingHearts';
 import Utils from '../utils/Utils';
 import { StackActions, NavigationActions } from 'react-navigation';
+import Modal from 'react-native-modal';
 
 const { width: WIDTH, height: HEIGHT } = Dimensions.get('window')
 
@@ -35,12 +36,14 @@ export class LiveStreamScreen extends Component {
             keyboardHeight: 0,
             visibleListMessages: true,
             listMessages: [],
-            countHeart: 0
+            countHeart: 0,
+            visibleModal: false,
         };
     }
 
     componentDidMount() {
-        this.requestCameraPermission()
+        if (Platform.OS === 'android')
+            this.requestCameraPermission()
         const { navigation: { state }, user: { id } } = this.props;
         SocketUtils.connect()
         SocketUtils.handleOnConnect()
@@ -64,27 +67,27 @@ export class LiveStreamScreen extends Component {
         }
     }
 
-     requestCameraPermission = async () => {
+    requestCameraPermission = async () => {
         try {
-          const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA,PermissionsAndroid.PERMISSIONS.RECORD_AUDIO],
-            {
-              title: "Permissão de câmera e microfone para LIVE",
-              message:
-                "O Buteco Virtual precisa de acesso à sua câmera " +
-                "para você poder fazer LIVE!",
-              buttonNegative: "Cancel",
-              buttonPositive: "PERMITIR"
+            const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA, PermissionsAndroid.PERMISSIONS.RECORD_AUDIO],
+                {
+                    title: "Permissão de câmera e microfone para LIVE",
+                    message:
+                        "O Buteco Virtual precisa de acesso à sua câmera " +
+                        "para você poder fazer LIVE!",
+                    buttonNegative: "Cancel",
+                    buttonPositive: "PERMITIR"
+                }
+            );
+            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+                //console.log("You can use the camera");
+            } else {
+                //console.log("Camera permission denied");
             }
-          );
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-            //console.log("You can use the camera");
-          } else {
-            //console.log("Camera permission denied");
-          }
         } catch (err) {
-          //console.warn(err);
+            //console.warn(err);
         }
-      };
+    };
 
     startLive = () => {
         const { idStream } = this.state
@@ -150,6 +153,10 @@ export class LiveStreamScreen extends Component {
                 visibleListMessages: true,
             });
         }
+    }
+
+    openModal = () => {
+        this.setState({ visibleModal: !this.state.visibleModal });
     }
 
     onPressHeart = () => {
@@ -370,6 +377,10 @@ export class LiveStreamScreen extends Component {
                             />
                             {
                                 <>
+                                    <RectButton onPress={this.openModal} style={{ padding: 30, alignItems: 'center', position: 'absolute', top: 10, left: 0, zIndex: 2 }}>
+                                        <Icon name="bars" color={'#fff'} size={28} />
+                                    </RectButton>
+
                                     <BaseButton onPress={this.closeViewer} style={styles.btnClose}>
                                         <Icon name="times" color={'#fff'} size={28} />
                                     </BaseButton>
@@ -382,14 +393,86 @@ export class LiveStreamScreen extends Component {
                                     {this.renderGroupInput()}
                                     {this.renderListMessages()}
                                     <FloatingHearts count={countHeart} style={styles.wrapGroupHeart} />
+                                    <Modal
+                                        isVisible={this.state.visibleModal}
+                                        style={styles.bottomModal}
+                                        onSwipeComplete={() => this.setState({ visibleModal: false })}
+                                        swipeDirection="down"
+                                        hasBackdrop={true}
+                                        backdropOpacity={0.10}
+                                        onBackdropPress={() => this.setState({ visibleModal: false })}
+                                        onBackButtonPress={() => this.setState({ visibleModal: false })}
+                                    >
+                                        <View style={styles.modalContent}>
+                                            <Text style={styles.label}>COMPARTILHAR</Text>
+                                            <View style={{flexDirection: 'row',marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#6684FB' }]}>
+                                                        <Icon name="share" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>Copiar Link</Text>
+                                                </View>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#61CE74' }]}>
+                                                        <Icon name="whatsapp" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>WhatsApp</Text>
+                                                </View>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#2376F5' }]}>
+                                                        <Icon name="facebook" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>Facebook</Text>
+                                                </View>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#62C67B' }]}>
+                                                        <Icon name="sms" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>SMS</Text>
+                                                </View>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#6BAAE2' }]}>
+                                                        <Icon name="twitter" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>Twitter</Text>
+                                                </View>
+                                                <View style={styles.iconContainer}>
+                                                    <View style={[styles.iconShare, { backgroundColor: '#5A9DF6' }]}>
+                                                        <Icon name="ellipsis-h" size={20} color={'#fff'} />
+                                                    </View>
+                                                    <Text style={styles.labelShare}>Outro</Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.linha}></View>
+                                            <View style={styles.buttons}>
+                                                <View style={styles.iconAction}>
+                                                    <Icon name="donate" color={'#6202F5'} size={30} style={{marginBottom: 10}}/>
+                                                    <Text style={styles.labelShare}>Fazer doação</Text>
+                                                </View>
+                                                <View style={styles.iconAction}>
+                                                    <Icon name="comment" color={'#6202F5'} size={30} style={{marginBottom: 10}}/>
+                                                    <Text style={styles.labelShare}>Chat privado</Text>
+                                                </View>
+                                                <View style={styles.iconAction}>
+                                                    <Icon name="hand-holding-usd" color={'#6202F5'} size={30} style={{marginBottom: 10}}/>
+                                                    <Text style={styles.labelShare}>Sentar à mesa</Text>
+                                                </View>
+                                            </View>
+                                            <View style={styles.footerModalContainer}>
+                                                <TouchableOpacity
+                                                    style={styles.rotativoModal}
+                                                    onPress={this.openModal}>
+                                                    <Text style={styles.label}>CANCELAR</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </Modal>
                                 </>
                             }
                         </View>
                         :
                         <Text style={{ alignItems: 'center', color: '#fff' }}>Nenhuma Live no momento</Text>
                 }
-
-
             </View>
         )
     }
@@ -552,6 +635,77 @@ const styles = StyleSheet.create({
     wrapGroupHeart: {
         marginBottom: 70
     },
+    bottomModal: {
+        justifyContent: "flex-end",
+        margin: 0,
+        zIndex: 3
+    },
+    modalContent: {
+        marginLeft: 0,
+        backgroundColor: "white",
+        backgroundColor: '#1F1F1F',
+        padding: 22,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 4,
+    },
+    footerModalContainer: {
+        flexDirection: "row",
+        position: "absolute",
+        borderColor: "#6202F5",
+        backgroundColor: "#6202F5",
+        borderTopWidth: 1,
+        bottom: 0,
+        left: 0,
+        right: 0
+      },
+      rotativoModal: {
+        flex: 1,
+        padding: 20,
+        borderLeftWidth: 1,
+        borderColor: "#12172b",
+        alignItems: "center"
+      },
+      label: {
+        fontFamily: "Roboto-Medium",
+        fontSize: 14,
+        color: "#fff"
+      },
+      iconContainer:{
+        alignItems: 'center',
+        justifyContent: 'space-around'
+      },
+      iconShare:{
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        backgroundColor: '#000',
+        marginBottom: 5
+      },
+      labelShare:{
+          color: '#fff',
+          fontSize: 9
+      },
+      linha:{
+          width: '100%', 
+          height: 1,
+          marginTop: 20,
+          backgroundColor: '#fff'
+      },
+      buttons:{
+          //marginBottom: 100,
+          margin: 20,
+          marginBottom: 80,
+          alignItems: 'center',
+          width: '90%',
+          justifyContent: 'space-between',
+          flexDirection: 'row',
+      },
+      iconAction:{
+          alignItems: 'center',
+      }
 });
 
 

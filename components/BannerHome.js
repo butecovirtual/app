@@ -24,7 +24,7 @@ export class BannerHome extends PureComponent {
               </View>
               <View style={styles.infos}>
                 <View style={styles.infoLeft}>
-                  <Text style={styles.title}>DUETÊ</Text>
+                  <Text style={styles.title}>BANDA DA TERESA</Text>
                   <View style={{flexDirection: 'row'}}>
                     <Text style={styles.genero}>Pop/Rock</Text>
                     <Text style={styles.nota}><Icon name="star" color={'#6202F5'} size={14} /> 4.5</Text>
@@ -80,12 +80,12 @@ const styles = StyleSheet.create({
       title:{
         color: '#fff',
         fontFamily: 'Roboto-Bold',
-        fontSize: 30
+        fontSize: 22
       },
       subTitle:{
         color: '#fff',
         fontFamily: 'Roboto-Bold',
-        fontSize: 22
+        fontSize: 18
       },
       genero:{
         color: '#fff'
