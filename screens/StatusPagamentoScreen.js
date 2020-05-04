@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { Text, View, StyleSheet, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { connect } from "react-redux";
 import { BaseButton } from 'react-native-gesture-handler';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -14,6 +15,7 @@ export class StatusPagamentoScreen extends PureComponent {
     }
 
     render() {
+        const { lives: { liveSelected: { id }} } = this.props
         return (
             <View style={styles.container}>
                 <View style={styles.iconContainer}>
@@ -21,7 +23,7 @@ export class StatusPagamentoScreen extends PureComponent {
                 </View>
                 <Text style={styles.title}>PAGAMENTO APROVADO!</Text>
                 <Text style={styles.text}>Obrigado por ajudar mais um artista. {'\n'} Divirta-se!</Text>
-                <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStack', {user: 'viewer', idStream: '5eadeb63f1fc353fd5293dae'})}> 
+                <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('LiveStack', {user: 'viewer', idStream: id})}> 
                     <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#8D42FF']} style={styles.gradient}>
                         <Text style={styles.textButton}>ASSISTIR AGORA</Text>
                     </LinearGradient>
@@ -71,4 +73,13 @@ const styles = StyleSheet.create({
     },
 });
 
-export default StatusPagamentoScreen
+const mapState = state => ({
+    user: state.user,
+    lives: state.live
+  })
+  
+  const mapDispatch = dispatch => ({
+  })
+  
+  export default connect(mapState, mapDispatch)(StatusPagamentoScreen);
+  

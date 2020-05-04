@@ -35,6 +35,8 @@ const loading = createLoadingPlugin({
     "user/createUserAsync",
     "user/getUserAsync",
     "live/createLiveAsync",
+    "live/getLivesAsync",
+    "live/getDetailLiveAsync",
     "live/getLivesArtistAsync",
     "artist/createArtistAsync"
   ]

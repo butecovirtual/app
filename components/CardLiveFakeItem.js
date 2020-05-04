@@ -4,13 +4,13 @@ import LinearGradient from 'react-native-linear-gradient'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { BaseButton } from 'react-native-gesture-handler'
 
-export class CardLiveItem extends PureComponent {
+export class CardLiveFakeItem extends PureComponent {
     render() {
-        const { id, status, artist, cover, navigation: { navigate }, callback } = this.props
+        const { cover, name, genre, now } = this.props
         return (
-            <BaseButton style={{ marginTop: 10, marginRight: 10 }} onPress={() => callback(id)}>
-                <ImageBackground source={cover ? cover : require('../img/artists/icon-default.jpg')} imageStyle={{ borderRadius: 10 }} style={styles.cover}>
-                    { status == 'Ao vivo' &&
+            <BaseButton style={{ marginTop: 10, marginRight: 10 }} >
+                <ImageBackground source={cover} imageStyle={{ borderRadius: 10 }} style={styles.cover}>
+                    { now &&
                         <View style={{ backgroundColor: 'rgba(0,0,0,0.35)', borderRadius: 10, flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                             <Icon name="play-circle" color={'#fff'} size={60} style={styles.iconPlay} />
                         </View>
@@ -18,17 +18,17 @@ export class CardLiveItem extends PureComponent {
 
                 </ImageBackground>
                 <View style={{ marginTop: 10, width: 170 }}>
+                { now &&
                     <LinearGradient start={{ x: 0, y: 1 }} end={{ x: 1, y: 1 }} colors={['#6202F5', '#A13DA0', '#A35757']} style={styles.aovivo}>
-                        <Text style={styles.textAovivo}>{status}</Text>
-                    </LinearGradient>
-                    <Text style={styles.title}>{artist.artist.name}</Text>
-                    <Text style={styles.subtitle}>{artist.artist.genre}</Text>
+                        <Text style={styles.textAovivo}>AO VIVO</Text>
+                    </LinearGradient> }
+                    <Text style={styles.title}> {name} </Text>
+                    <Text style={styles.subtitle}> {genre} </Text>
                 </View>
             </BaseButton>
         )
     }
 }
-
 
 const styles = StyleSheet.create({
     cover: {
@@ -46,8 +46,8 @@ const styles = StyleSheet.create({
     },
     aovivo: {
         padding: 5,
-        paddingLeft: 5,
-        paddingRight: 5,
+        paddingLeft: 10,
+        paddingRight: 10,
         borderRadius: 5,
         width: 80,
         marginBottom: 5,
@@ -56,10 +56,9 @@ const styles = StyleSheet.create({
     textAovivo: {
         color: '#fff',
         textTransform: 'uppercase',
-        fontFamily: 'Roboto-Bold',
-        fontSize: 12
+        fontFamily: 'Roboto-Bold'
     }
 })
 
 
-export default CardLiveItem
+export default CardLiveFakeItem

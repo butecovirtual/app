@@ -28,8 +28,8 @@ class ConfirmaTokenScreen extends PureComponent {
     logar = () => {
         const { token } = this.state;
         const { navigation: { navigate }, login, user: { username } } = this.props;
-        console.tron.log(this.props)
-        console.tron.log(this.state)
+        //console.tron.log(this.props)
+        //console.tron.log(this.state)
         const payload = { username, token };
 
         if (username && token) {

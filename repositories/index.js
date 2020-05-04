@@ -87,3 +87,22 @@ export const getLivesArtist = (id) =>
             throw e;
         });
 
+export const getDetailLive = (id) =>
+    instance(BASE_URL).get(`/live/${id}`)
+        .then(response => {
+            return response;
+        })
+        .catch(e => {
+            throw e;
+        });
+
+
+export const getLives = (id) =>
+    instance(BASE_URL).get(`/lives`)
+        .then(response => {
+            return response;
+        })
+        .catch(e => {
+            throw e;
+        });
+

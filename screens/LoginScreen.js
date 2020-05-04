@@ -33,7 +33,7 @@ class LoginScreen extends PureComponent {
       navigation: { navigate }
     } = this.props;
     if (user && Object.keys(user).length > 0) {
-      console.tron.log(user)
+      //console.tron.log(user)
       if(user.token){
         addAuthToken(user.token);
         navigate("HomeStack");

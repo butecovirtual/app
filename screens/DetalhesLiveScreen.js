@@ -1,13 +1,23 @@
 import React, { PureComponent } from 'react'
 import { Text, View, Dimensions, ImageBackground, StyleSheet } from 'react-native'
 import { ScrollView, BaseButton, RectButton, TouchableOpacity } from 'react-native-gesture-handler'
+import { connect } from "react-redux";
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
+import { formatNumberToCurrency } from '../utils/formatters'
+import moment from 'moment';
 
 const { width: WIDTH } = Dimensions.get('window')
 
 export class DetalhesLiveScreen extends PureComponent {
+
+    componentDidMount(){
+        const { getLive, lives: { liveSelected: { id }}} = this.props
+        getLive(id)
+    }
+
     render() {
+        const { lives: { liveSelected: { id, status, valueBase, when, artist }}} = this.props
         return (
             <ScrollView contentContainerStyle={styles.scroll} showsVerticalScrollIndicator={false}>
                 <View style={styles.container}>
@@ -15,24 +25,24 @@ export class DetalhesLiveScreen extends PureComponent {
                     <View style={styles.corte}></View>
                     <View style={styles.dadosArtista}>
                         <View style={styles.cardData}>
-                            <Text style={styles.labelData}>01/06</Text>
-                            <Text style={styles.labelHora}>19h</Text>
+                            <Text style={styles.labelData}>{when && moment(when).format('DD/MM')}</Text>
+                            <Text style={styles.labelHora}>{when && moment(when).format('HH:mm')}</Text>
                         </View>
                         <View style={styles.bandaContainer}>
-                            <Text style={styles.labelBanda}>BANDA DA TERESA</Text>
-                            <Text style={styles.labelGenero}>Pop/Rock</Text>
+                            <Text style={styles.labelBanda}>{artist && artist.artist.name.toUpperCase()}</Text>
+                            <Text style={styles.labelGenero}>{artist && artist.artist.genre}</Text>
                         </View>
                         <View style={styles.rightContainer}>
                             <View style={styles.rateContainer}>
                                 <Icon name={'star'} size={18} color={'#fff'} />
                                 <Text style={styles.labelRate}>4.5</Text>
                             </View>
-                            <Text style={styles.valor}>R$5,00</Text>
+                            <Text style={styles.valor}>R${ valueBase && formatNumberToCurrency(parseFloat(valueBase))}</Text>
                         </View>
                     </View>
                     <View style={styles.bioContainer}>
                         <Text style={styles.labelBio}>
-                            A Banda da Teresa é uma banda de pop rock formada em Belo Horizonte no ano de 2017. O trio apresenta um show de música autorale repertório cover. É formada por Costa (vocal e guitarra), Lamac (vocal e baixo) e Peixe (vocal e bateria). Juntos há anos na busca da consolidação de um sonho coletivo, o grupo evidencia o sentimento e a vivência de cada um dos integrantes embalados em forma de música. Suas principais influências vêm do rock e do reggae.
+                        { artist ? artist.artist.bio : `A Banda da Teresa é uma banda de pop rock formada em Belo Horizonte no ano de 2017. O trio apresenta um show de música autorale repertório cover. É formada por Costa (vocal e guitarra), Lamac (vocal e baixo) e Peixe (vocal e bateria). Juntos há anos na busca da consolidação de um sonho coletivo, o grupo evidencia o sentimento e a vivência de cada um dos integrantes embalados em forma de música. Suas principais influências vêm do rock e do reggae.`}
                         </Text>
                     </View>
                     <BaseButton style={styles.button} onPress={() => this.props.navigation.navigate('SelecionarProduto')}>
@@ -185,4 +195,15 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DetalhesLiveScreen
+
+const mapState = state => ({
+    user: state.user,
+    lives: state.live
+  })
+  
+  const mapDispatch = dispatch => ({
+      getLive: (id) => dispatch.live.getDetailLiveAsync(id)
+  })
+  
+  export default connect(mapState, mapDispatch)(DetalhesLiveScreen);
+  

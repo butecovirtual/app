@@ -1,30 +1,32 @@
 import React, { PureComponent } from 'react';
 import { View, Text, SafeAreaView, StyleSheet, Image, ImageBackground, StatusBar, TouchableOpacity } from 'react-native';
 import { ScrollView, FlatList } from 'react-native-gesture-handler';
+import { connect } from "react-redux";
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import BannerHome from '../components/BannerHome';
 import CardLiveItem from '../components/CardLiveItem';
+import CardLiveFakeItem from '../components/CardLiveFakeItem';
 
 const livesNow = [
   {
     cover: require('../img/artists/well.jpg'),
-    artist: 'Well Figuerê',
+    name: 'Well Figuerê',
     genre: 'MPB'
   },
   {
     cover: require('../img/artists/faca-amolada.jpg'),
-    artist: 'Duetê',
+    name: 'Duetê',
     genre: 'MPB'
   },
   {
     cover: require('../img/artists/lilian.jpg'),
-    artist: 'Lilian Lorão',
+    name: 'Lilian Lorão',
     genre: 'Pop/Rock'
   },
   {
     cover: require('../img/artists/foo-fighters.jpg'),
-    artist: 'Foo Figters Cover',
+    name: 'Foo Figters Cover',
     genre: 'Rock'
   }
 ]
@@ -88,7 +90,23 @@ class HomeScreen extends PureComponent {
     };
   }
 
+  componentDidMount() {
+    this.props.getLives()
+  }
+
+  refetchLives = () => {
+    this.props.getLives()
+  }
+
+  selectLive = (id) => {
+      //console.tron.log('SELECT', id) 
+      this.props.selectLive({id})
+      this.props.navigation.navigate('DetalhesLive')
+  }
+
   render() {
+    const { lives: { list }, loading } = this.props
+    const { listLives } = this.state
     return (
       <SafeAreaView style={styles.safe} >
         <StatusBar barStyle={"light-content"} />
@@ -99,71 +117,73 @@ class HomeScreen extends PureComponent {
             <View>
               <Text style={styles.title}>LIVE AGORA</Text>
               <FlatList
-                data={livesNow}
+                data={list}
                 horizontal={true}
+                onRefresh={this.refetchLives}
+                refreshing={loading}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => (`livesNow-${index}`)}
-                renderItem={({ item }) => <CardLiveItem now={true} navigation={this.props.navigation} {...item} />}
+                renderItem={({ item }) => <CardLiveItem callback={this.selectLive} navigation={this.props.navigation} {...item} />}
               />
             </View>
 
-            <View style={{marginTop: 50}}>
+            <View style={{ marginTop: 50 }}>
               <Text style={styles.title2}>AMANHÃ 29/04</Text>
-              <View style={[styles.barra, {width: 30}]}></View>
+              <View style={[styles.barra, { width: 30 }]}></View>
               <FlatList
                 data={livesTomorrow}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => (`li vesTomorrow-${index}`)}
-                renderItem={({ item }) => <CardLiveItem now={false} navigation={this.props.navigation} {...item} />}
+                renderItem={({ item }) => <CardLiveFakeItem now={false} navigation={this.props.navigation} {...item} />}
               />
             </View>
-            
-            <View style={{marginTop: 50}}>
+
+            <View style={{ marginTop: 50 }}>
               <Text style={styles.title2}>SEXTA-FEIRA 01/05</Text>
-              <View style={[styles.barra, {width: 30}]}></View>
+              <View style={[styles.barra, { width: 30 }]}></View>
               <FlatList
                 data={livesFriday}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => (`livesFriday-${index}`)}
-                renderItem={({ item }) => <CardLiveItem now={false} navigation={this.props.navigation} {...item} />}
+                renderItem={({ item }) => <CardLiveFakeItem now={false} navigation={this.props.navigation} {...item} />}
               />
             </View>
 
-            <View style={{marginTop: 50}}>
+            <View style={{ marginTop: 50 }}>
               <Text style={styles.title2}>QUARTA-FEIRA 06/05</Text>
-              <View style={[styles.barra, {width: 30}]}></View>
+              <View style={[styles.barra, { width: 30 }]}></View>
               <FlatList
                 data={livesWednesday}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => (`livesWednesday-${index}`)}
-                renderItem={({ item }) => <CardLiveItem now={false} navigation={this.props.navigation} {...item} />}
+                renderItem={({ item }) => <CardLiveFakeItem now={false} navigation={this.props.navigation} {...item} />}
               />
             </View>
 
-            <View style={{marginTop: 50}}>
+            <View style={{ marginTop: 50 }}>
               <Text style={styles.title2}>SÁBADO 09/04</Text>
-              <View style={[styles.barra, {width: 30}]}></View>
+              <View style={[styles.barra, { width: 30 }]}></View>
               <FlatList
                 data={livesSaturday}
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
                 keyExtractor={(item, index) => (`livesSaturday-${index}`)}
-                renderItem={({ item }) => <CardLiveItem now={false} navigation={this.props.navigation} {...item} />}
+                renderItem={({ item }) => <CardLiveFakeItem now={false} navigation={this.props.navigation} {...item} />}
               />
             </View>
 
             <View style={styles.footer}>
-                <TouchableOpacity style={styles.btnFooter}>
-                  <Text style={styles.textThin}>Compartilhar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.btnFooter}>
-                  <Text style={styles.textThin}>Ajuda</Text>
-                </TouchableOpacity>
+              <TouchableOpacity style={styles.btnFooter}>
+                <Text style={styles.textThin}>Compartilhar</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.btnFooter}>
+                <Text style={styles.textThin}>Ajuda</Text>
+              </TouchableOpacity>
             </View>
-            
+
           </View>
         </ScrollView>
       </SafeAreaView>
@@ -203,14 +223,14 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto-Bold',
     fontSize: 18
   },
-  footer:{
+  footer: {
     flexDirection: 'row',
     width: '100%',
     marginTop: 50,
     marginBottom: 50,
     justifyContent: 'space-around',
   },
-  btnFooter:{
+  btnFooter: {
     padding: 10,
     width: 170,
     paddingTop: 30,
@@ -220,7 +240,7 @@ const styles = StyleSheet.create({
     borderColor: '#8D42FF',
     alignItems: 'center'
   },
-  textThin:{
+  textThin: {
     color: '#fff',
     fontSize: 18,
     textTransform: 'uppercase',
@@ -228,4 +248,15 @@ const styles = StyleSheet.create({
   }
 })
 
-export default HomeScreen;
+const mapState = state => ({
+  user: state.user,
+  lives: state.live,
+  loading: state.loading.effects.live.getLivesAsync,
+})
+
+const mapDispatch = dispatch => ({
+  getLives: () => dispatch.live.getLivesAsync(),
+  selectLive: id => dispatch.live.selectLive(id),
+})
+
+export default connect(mapState, mapDispatch)(HomeScreen);

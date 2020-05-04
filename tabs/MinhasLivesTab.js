@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { BaseButton } from 'react-native-gesture-handler';
 import { formatTimestampToDate, formatNumberToCurrency } from '../utils/formatters';
 import moment from 'moment';
-import Icon  from 'react-native-vector-icons/FontAwesome5';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 class CardItem extends PureComponent {
 
@@ -18,7 +18,7 @@ class CardItem extends PureComponent {
         const hourLive = when && moment(when).format('HH:mm')
         const formattedValueBase = valueBase && formatNumberToCurrency(parseFloat(valueBase))
         const formattedValueTable = valueTable && formatNumberToCurrency(parseFloat(valueTable))
-        const dateLive = when &&  moment(when).format('DD/MM');
+        const dateLive = when && moment(when).format('DD/MM');
         return (
             <BaseButton style={{ flex: 1, padding: 16, flexDirection: 'row', width: '100%' }} onPress={this.details}>
                 <View style={styles.cardData}>
@@ -27,8 +27,7 @@ class CardItem extends PureComponent {
                 </View>
                 <View style={styles.containerData}>
                     <View style={styles.content}>
-                        <Text style={styles.label}>Título:</Text>
-                        <Text style={styles.postTitle}>{title}</Text>
+                        <Text style={[styles.postTitle, { marginLeft: 0 }]}>{title}</Text>
                     </View>
                     <View style={styles.content}>
                         <Text style={styles.label}>Entrada:</Text>
@@ -43,9 +42,13 @@ class CardItem extends PureComponent {
                         <Text style={styles.postTitle}>{status}</Text>
                     </View>
                 </View>
-                <View style={styles.iconContainer}>
-                    <Icon name="chevron-right" size={30} color={'#fff'} />
-                </View>
+                {
+                    status != 'Encerrada' &&
+                    <View style={styles.iconContainer}>
+                        <Icon name="chevron-right" size={30} color={'#fff'} />
+                    </View>
+                }
+
             </BaseButton>
         )
     }
@@ -65,8 +68,8 @@ export class MinhasLivesTab extends PureComponent {
             <View style={styles.tab}>
                 {
                     lives.length == 0 &&
-                    <View style={{alignItems: "center"}}>
-                    <Text style={{ color: '#fff', marginTop: 30 }}> Você não possui nenhuma LIVE registrada. </Text>
+                    <View style={{ alignItems: "center" }}>
+                        <Text style={{ color: '#fff', marginTop: 30 }}> Você não possui nenhuma LIVE registrada. </Text>
                     </View>
                 }
                 <FlatList
@@ -97,8 +100,8 @@ const styles = StyleSheet.create({
         borderColor: '#6202F5',
         alignItems: 'center',
     },
-    list:{
-        padding: 20
+    list: {
+        padding: 0
     },
     text: {
         color: '#fff',
@@ -124,12 +127,13 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     containerData: {
-        marginLeft: 20,
+        marginLeft: 10,
+        width: 180,
     },
-    content:{
+    content: {
         flexDirection: 'row'
     },
-    label:{
+    label: {
         color: '#fff',
         fontFamily: 'Roboto-Regular',
     },
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
     iconContainer: {
         alignItems: 'center',
         justifyContent: 'center',
-        marginLeft: 50
+        marginLeft: 15
     }
 })
 
