@@ -54,7 +54,7 @@ export class CriarLiveScreen extends PureComponent {
         const { create, navigation: { navigate }} = this.props
         const { nomeLive, dataLive, horaInicio, valorMesa, valorEntrada } = this.state
         const dtLive = moment(`${dataLive} ${horaInicio}`, 'DD/MM/YYYY HH:mm')
-        console.tron.log(dtLive)
+
         if(dataLive && horaInicio && valorMesa && valorEntrada)
             create({
                 title: nomeLive,
@@ -205,6 +205,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: '#985FEE',
         borderRadius: 6,
+        color: '#fff',
         marginTop: 10,
         fontSize: 14,
     },

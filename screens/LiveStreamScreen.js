@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Keyboard, LayoutAnimation, SafeAreaView, Platform, TextInput } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Dimensions, Keyboard, LayoutAnimation, SafeAreaView, Platform, TextInput, PermissionsAndroid } from 'react-native'
 import { NodeCameraView, NodePlayerView } from 'react-native-nodemediaclient';
 import { BaseButton, ScrollView } from 'react-native-gesture-handler';
 import { connect } from "react-redux";
@@ -40,6 +40,7 @@ export class LiveStreamScreen extends Component {
     }
 
     componentDidMount() {
+        this.requestCameraPermission()
         const { navigation: { state }, user: { id } } = this.props;
         SocketUtils.connect()
         SocketUtils.handleOnConnect()
@@ -61,9 +62,29 @@ export class LiveStreamScreen extends Component {
             }
 
         }
-
-
     }
+
+     requestCameraPermission = async () => {
+        try {
+          const granted = await PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.CAMERA,PermissionsAndroid.PERMISSIONS.RECORD_AUDIO],
+            {
+              title: "Permissão de câmera e microfone para LIVE",
+              message:
+                "O Buteco Virtual precisa de acesso à sua câmera " +
+                "para você poder fazer LIVE!",
+              buttonNegative: "Cancel",
+              buttonPositive: "PERMITIR"
+            }
+          );
+          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            //console.log("You can use the camera");
+          } else {
+            //console.log("Camera permission denied");
+          }
+        } catch (err) {
+          //console.warn(err);
+        }
+      };
 
     startLive = () => {
         const { idStream } = this.state

@@ -187,6 +187,7 @@ const styles = StyleSheet.create({
         padding: 15,
         width: WIDTH - 70,
         borderRadius: 6,
+        marginBottom: 100,
         fontSize: 16,
       },
     gradient: {
