@@ -15,7 +15,7 @@
     "@rematch/persist": "1.1.6",
     "axios": "^0.18.1",
     "moment": "^2.24.0",
-    "moment-timezone": "^0.5.27",
+    "moment-timezone": "^0.5.35",
     "native-base": "2.13.7",
     "prop-types": "^15.7.2",
     "react": "16.9.0",
